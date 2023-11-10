@@ -100,10 +100,23 @@
   )
 }
 
+// An info box.
 #let uinfo(body, footer: none) = __ubox(body, kind: "info", footer: footer)
+
+// A definition box.
 #let udefinition(body, footer: none) = __ubox(body, kind: "definition", footer: footer)
+
+// A question box.
 #let uquestion(body, footer: none) = __ubox(body, kind: "question", footer: footer)
+
+// An important box.
 #let uimportant(body, footer: none) = __ubox(body, kind: "important", footer: footer)
+
+// A conclusion box.
 #let uconclusion(body, footer: none) = __ubox(body, kind: "conclusion", footer: footer)
+
+// A good box.
 #let ugood(body, footer: none) = __ubox(body, kind: "good", footer: footer)
+
+// A note box.
 #let unote(body, footer: none) = __ubox(body, kind: "note", footer: footer)

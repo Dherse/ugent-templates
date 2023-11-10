@@ -1,8 +1,8 @@
 #import "../common/colors.typ": *
-#import "../common/glossary.typ": *
-#import "../common/info.typ": *
-#import "@preview/codly:0.1.0": *
-#import "@preview/tablex:0.0.6": *
+#import "../common/glossary.typ": gloss, gloss-entry, gloss-init, glossary
+#import "../common/info.typ": uinfo, udefinition, uquestion, uimportant, uconclusion, ugood, unote
+#import "@preview/codly:0.1.0": codly-init, codly, codly-offset, codly-range, disable-codly
+#import "@preview/tablex:0.0.6": tablex, vlinex, hlinex, colspanx, rowspanx, cellx
 
 #let ugent-font = "UGent Panno Text"
 
