@@ -1,5 +1,6 @@
 #import "../common/colors.typ": *
 #import "../common/glossary.typ": *
+#import "../common/info.typ": *
 #import "@preview/codly:0.1.0": *
 #import "@preview/tablex:0.0.6": *
 
@@ -163,7 +164,7 @@
   // The prefix to place before the number
   prefix: none,
   // The postfix to place after the number
-  postfix: none,
+  postfix: " ",
   // Whether to underline both the number and the title.
   underline-all: false,
   // The heading. Must be a heading!
@@ -185,7 +186,7 @@
   let body = it.body
   let num = it.numbering
 
-  let title(size, space: none, underlined: false,) = {
+  let title(size, space: none, underlined: false, local-num: true) = {
     // Show a big number for title level headings
     if number and level == 1 and big {
       set text(
@@ -209,9 +210,9 @@
     // Disable justification locally
     set par(leading: 0.4em, justify: false)
 
-    let num = if number and (not big or level > 1) {
+    let num = if number and local-num and (not big or level > 1) {
       prefix
-      smallcaps(numbering(num, ..current-level))
+      numbering(num, ..current-level)
       postfix
     }
 
@@ -258,9 +259,8 @@
       title(14pt)
     )
   } else {
-    block(
-      breakable: false,
-      title(14pt)
+    box(
+      title(12pt, local-num: false)
     )
   }
 }
