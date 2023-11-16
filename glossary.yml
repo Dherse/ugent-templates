@@ -1,0 +1,12 @@
+ucl:
+  short: "#emph[UCLouvain]"
+  long: Université catholique de Louvain
+ugent:
+  short: "*UGhent*"
+  long: Universiteit Gent
+yaml:
+  short: YAML
+  long: YAML Ain't Markup Language
+pic:
+  short: PIC
+  long: Photonic Integrated Circuit
