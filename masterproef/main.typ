@@ -14,7 +14,7 @@
 
 // Instantiate the template
 #show: ugent-template.with(
-  authors: ( "Sébastien d'Herbais", ),
+  authors: ( "Sébastien d'Herbais de Thun", ),
   title: "Demo of the UGhent template",
   // This can be removed if you don't include code:
   languages: (
