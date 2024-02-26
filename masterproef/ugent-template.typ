@@ -5,7 +5,8 @@
 #import "@preview/tablex:0.0.6": tablex, vlinex, hlinex, colspanx, rowspanx, cellx
 
 #let ugent-font = "UGent Panno Text"
-#let font-size = 11pt
+#let font-size = 12pt
+
 
 // Formatting function for a UGent figure captions.
 #let ugent-caption(it) = {
@@ -28,10 +29,10 @@
   )
   
   grid(
-    columns: (5em, 1fr),
+    columns: (8em, 1fr),
     gutter: 0pt,
     rows: (auto),
-    cell(height: auto, stroke: none, width: 5em, align(right)[#supplement]),
+    cell(height: auto, stroke: none, width: 8em, align(right)[#supplement]),
     cell(height: auto, align(left, it.body)),
   )
 }
@@ -43,7 +44,7 @@
   // The authors of your thesis: an array of strings
   authors: (),
   // The programming languages you want to use.
-  languages: (),
+  languages: (), 
   // The body of your thesis.
   body,
 ) = {
@@ -60,7 +61,40 @@
   )
   
   // Set the basic page properties.
-  set page(number-align: right, margin: 2.5cm)
+  set page(
+    number-align: right,
+    margin: 2.5cm,
+    footer: align(right, locate(loc => {
+      let sec = state("section").at(loc)
+      if sec == "preface" {
+        numbering("I", ..counter(page).at(loc))
+      } else if sec == "body" {
+        let end_preface = query(<appendix>, loc)
+        if end_preface.len() > 0 {
+          numbering(
+            "1",
+            ..counter(page).at(loc)
+          ) + " of " + numbering(
+              "1",
+              ..counter(page).at(
+                end_preface.first().location()
+              ).map((x) => x - 1))
+        } else {
+          numbering(
+            "1",
+            ..counter(page).at(loc)
+          ) + " of " + numbering(
+              "1",
+              ..counter(page).final(
+                loc
+              ))
+        }
+        
+      } else {
+        numbering("A of A", ..counter(page).at(loc))
+      }
+    }))
+  )
   
   // Set the basic paragraph properties.
   set par(leading: 1em, justify: true, linebreaks: "optimized")
@@ -101,6 +135,23 @@
           #it.element.supplement\u{a0}#idx.#numbers: #body
         ]#box(width: 1fr, it.fill) #it.page
       ]
+    } else {
+      it
+    }
+  }
+
+  show ref: it => {
+    if it.has("element") and it.element != none and it.element.func() == figure {
+      if state("section").at(it.element.location()) == "annex" {
+        let loc = it.element.location();
+        let idx = numbering("A", ..counter(heading).at(loc))
+        let numbers = numbering("1", ..it.element.counter.at(loc))
+        link(loc)[
+          #it.element.supplement\u{a0}#idx.#numbers
+        ]
+      } else {
+        it
+      }
     } else {
       it
     }
@@ -197,13 +248,13 @@
   if level == 1 {
     // Include a pagebreak before the title.
     pagebreak(weak: true)
-    block(breakable: false, title(30pt, space: 0.2em, underlined: true))
+    block(breakable: false, title(22pt, space: 0.2em, underlined: true))
   } else if level == 2 {
-    block(breakable: false, title(22pt, space: 10pt, underlined: true))
+    block(breakable: false, title(18pt, space: 10pt, underlined: true))
   } else if level == 3 {
-    block(breakable: false, title(18pt))
-  } else if level == 99 {
     block(breakable: false, title(14pt))
+  } else if level == 99 {
+    block(breakable: false, title(12pt))
   } else {
     box(title(12pt, local-num: false))
   }
@@ -312,12 +363,19 @@
   }
   
   bibliography(file, style: style)
+  pagebreak(weak: true)
 }
 
 // Set up the styling of the appendix.
 #let ugent-appendix(body) = {
+  [
+    #show heading.where(level: 99): it => {}
+    #heading(level: 99, "Appendix") <appendix>
+  ]
+  
   // Reset the title numbering.
   counter(heading).update(0)
+  counter(page).update(1)
   
   // Number headings using letters.
   set heading(numbering: "A", outlined: false)
